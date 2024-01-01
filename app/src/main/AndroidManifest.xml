@@ -28,6 +28,8 @@
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".MyService"/>
     </application>
 
 </manifest>
