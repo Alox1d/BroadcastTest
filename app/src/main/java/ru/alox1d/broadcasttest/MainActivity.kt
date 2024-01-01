@@ -10,12 +10,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class MainActivity : AppCompatActivity() {
 
-
+    // 1. Basic Receiver
     // private val receiver = MyReceiver()
-    // TO communicate with View-elements
+
+    // 2. Receiver TO communicate with View-elements
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
@@ -26,8 +28,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private var count = 0
 
+    // 3. Local Receiver
+    private val localBroadcastManager by lazy {
+        LocalBroadcastManager.getInstance(this)
+    }
+
+    private var count = 0
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +56,9 @@ class MainActivity : AppCompatActivity() {
     private fun sendCustomBroadcast() {
         Intent(MyReceiver.ACTION_CLICKED).run {
             putExtra(MyReceiver.EXTRA_COUNT, ++count)
-            sendBroadcast(this)
+
+            // 2. broadcast sending sendBroadcast(this)
+            localBroadcastManager.sendBroadcast(this)
         }
     }
 
@@ -61,13 +70,19 @@ class MainActivity : AppCompatActivity() {
             addAction(MyService.ACTION_LOADED)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(receiver, intentFilter, RECEIVER_EXPORTED)
+
+            // 1. Basic Receiver
+            // registerReceiver(receiver, intentFilter, RECEIVER_EXPORTED)
+
+            localBroadcastManager.registerReceiver(receiver, intentFilter)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        unregisterReceiver(receiver)
+        // 1. Basic Receiver
+        // unregisterReceiver(receiver)
+        localBroadcastManager.unregisterReceiver(receiver)
     }
 }

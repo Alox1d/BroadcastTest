@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Broadcast Test"
 include(":app")
- 
+include(":broadcast2")

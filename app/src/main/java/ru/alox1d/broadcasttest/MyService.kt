@@ -4,11 +4,17 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlin.concurrent.thread
 
 
 
 class MyService : Service() {
+
+    // 3. Local Receiver
+    private val localBroadcastManager by lazy {
+        LocalBroadcastManager.getInstance(this)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         thread {
@@ -18,7 +24,7 @@ class MyService : Service() {
                 Thread.sleep(1000)
                 Intent(ACTION_LOADED).run {
                     putExtra(EXTRA_PERCENT, i * 10)
-                    sendBroadcast(this)
+                    localBroadcastManager.sendBroadcast(this)
                 }
             }
         }
