@@ -12,17 +12,19 @@ class MyReceiver : BroadcastReceiver() {
                 val percent = intent.getIntExtra(MyService.EXTRA_PERCENT, 0)
                 Toast.makeText(context, "$percent", Toast.LENGTH_SHORT).show()
             }
+
             ACTION_CLICKED -> Toast.makeText(
                 context,
                 "Clicked ${intent.getIntExtra(EXTRA_COUNT, 0)}",
                 Toast.LENGTH_SHORT
             ).show()
+
             Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
                 val turnedOn = intent.getBooleanExtra("state", false)
                 Toast.makeText(
-                        context,
-                "Airplane mode is changed. Turned on $turnedOn",
-                Toast.LENGTH_SHORT
+                    context,
+                    "Airplane mode is changed. Turned on $turnedOn",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
 
